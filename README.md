@@ -16,50 +16,30 @@ Os tópicos abordados incluem:
 
 O repositório está organizado da seguinte forma:
 
+```
 |-- aula1
-
 |   |-- codigo1.py
-
 |   |-- codigo2.py
-
 |   ...
-
 |   |-- codigoN.py
-
 |   |-- guiao-aula.pdf
-
 |   |-- material-complementar.pdf
-
 |-- aula2
-
 |   |-- codigo1.py
-
 |   |-- codigo2.py
-
 |   ...
-
 |   |-- codigoN.py
-
 |   |-- guiao-aula.pdf
-
 |   |-- material-complementar.pdf
-
 ...
-
 |-- aulaN
-
 |   |-- codigo1.py
-
 |   |-- codigo2.py
-
 |   ...
-
 |   |-- codigoN.py
-
 |   |-- guiao-aula.pdf
-
 |   |-- material-complementar.pdf
-
 |-- README.md
+```
 
 Cada pasta representa uma aula específica e contém os ficheiros utilizados na aula. O arquivo README.md contém a descrição do repositório e a estrutura do mesmo.
