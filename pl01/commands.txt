@@ -1,0 +1,4 @@
+comando 1
+comando 2
+comando 5
+EXIT

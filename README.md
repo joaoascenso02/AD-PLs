@@ -17,14 +17,14 @@ Os tópicos abordados incluem:
 O repositório está organizado da seguinte forma:
 
 ```
-|-- aula1
+|-- pl01
 |   |-- codigo1.py
 |   |-- codigo2.py
 |   ...
 |   |-- codigoN.py
 |   |-- guiao-aula.pdf
 |   |-- material-complementar.pdf
-|-- aula2
+|-- pl01
 |   |-- codigo1.py
 |   |-- codigo2.py
 |   ...
@@ -32,7 +32,7 @@ O repositório está organizado da seguinte forma:
 |   |-- guiao-aula.pdf
 |   |-- material-complementar.pdf
 ...
-|-- aulaN
+|-- plN
 |   |-- codigo1.py
 |   |-- codigo2.py
 |   ...
