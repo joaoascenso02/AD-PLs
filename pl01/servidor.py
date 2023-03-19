@@ -3,7 +3,7 @@ import sys
 from argparse import ArgumentParser
 
 
-def parse():
+def parse() -> dict:
     parser = ArgumentParser(
         description="Servidor"
 
@@ -27,7 +27,7 @@ def parse():
     return args
 
 
-def main():
+def main() -> None:
 
     args = parse()
 
