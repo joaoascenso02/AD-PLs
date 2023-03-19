@@ -1,11 +1,11 @@
-import sys
-import socket as s
+import struct
 from argparse import ArgumentParser
 
 import sock_utils
+from skeleton import ListSkeleton
 
 
-def parse():
+def parse() -> dict:
     parser = ArgumentParser(
         description="Servidor"
     )
@@ -28,7 +28,7 @@ def parse():
     return args
 
 
-def main():
+def main() -> None:
 
     args = parse()
 
@@ -39,35 +39,32 @@ def main():
 
         sock = sock_utils.create_tcp_server_socket(HOST, PORT, 1)
 
-        list = []
+        skeleton = ListSkeleton()
+
         while True:
             try:
 
-                
                 (conn_sock, addr) = sock.accept()
-                msg = conn_sock.recv(1024)
+
+                req_size_bytes = sock_utils.receive_all(conn_sock, 4)
+                req_size = struct.unpack("i", req_size_bytes)[0]
+
+                req_bytes = sock_utils.receive_all(conn_sock, req_size)
                 
-                
-                resp = "Ack"
+                resp_bytes = skeleton.processMessage(req_bytes)
 
-                if msg.decode() == "LIST":
-                    resp = str(list)
+                resp_size_bytes = struct.pack("i", len(resp_bytes))
 
-                elif msg.decode() == "CLEAR":
-                    list = []
-                    resp = "Lista apagada"
+                conn_sock.sendall(resp_size_bytes)
+                conn_sock.sendall(resp_bytes)
 
-                else:
-                    list.append(msg.decode())
-
-                conn_sock.sendall(resp.encode())
-
-                print("list= %s" % list)
                 conn_sock.close()
 
-            except:
-                print("Socket fechado!")
-                conn_sock.close()
+            except Exception as e:
+                print(e)
+                break
+
+        sock.close()
 
     except KeyboardInterrupt:
         print("\n Vou encerrar!")

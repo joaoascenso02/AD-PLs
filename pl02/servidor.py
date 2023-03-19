@@ -45,7 +45,7 @@ def main() -> None:
 
                 (conn_sock, addr) = sock.accept()
 
-                req_size_bytes = conn_sock.recv(4)
+                req_size_bytes = sock_utils.receive_all(conn_sock, 4)
                 req_size = struct.unpack("i", req_size_bytes)[0]
 
                 req_bytes = sock_utils.receive_all(conn_sock, req_size)
@@ -75,6 +75,8 @@ def main() -> None:
             except:
                 print("Vou encerrar!")
                 break
+
+        sock.close()
 
     except KeyboardInterrupt:
         print("\n Vou encerrar!")

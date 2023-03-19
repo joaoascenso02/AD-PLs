@@ -57,11 +57,10 @@ def main() -> None:
                 conn_sock.sendall(msg_size_bytes)
                 conn_sock.sendall(msg_bytes)
 
-                resp_size_bytes = conn_sock.recv(4)
+                resp_size_bytes = sock_utils.receive_all(conn_sock, 4)
                 resp_size = struct.unpack("i", resp_size_bytes)[0]
 
-                resp_bytes = conn_sock.recv(resp_size)
-
+                resp_bytes = sock_utils.receive_all(conn_sock, resp_size)
                 m = p.loads(resp_bytes)
 
                 print("Recebi: %s" % m)

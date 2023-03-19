@@ -48,16 +48,21 @@ def main() -> None:
         sock.listen(1)
 
         while True:
-            (conn_sock, (addr, port)) = sock.accept()
-            print("ligado a %s, no porto %s" % (addr, port))
-            msg = conn_sock.recv(1024)
+            try:
+                (conn_sock, (addr, port)) = sock.accept()
+                print("ligado a %s, no porto %s" % (addr, port))
+                msg = conn_sock.recv(1024)
 
-            reposta = msg.decode()
+                reposta = msg.decode()
 
-            print("recebi %s" % reposta)
+                print("recebi %s" % reposta)
 
-            conn_sock.sendall(reposta.encode())
-            conn_sock.close()
+                conn_sock.sendall(reposta.encode())
+                conn_sock.close()
+
+            except Exception as e:
+                print(e)
+                break
 
         sock.close()
 

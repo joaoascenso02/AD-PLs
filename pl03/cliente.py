@@ -1,8 +1,5 @@
-import sys
-import socket as s
 from argparse import ArgumentParser
 
-import sock_utils
 from stub import ListStub
 
 def parse() -> dict:
@@ -37,23 +34,38 @@ def main() -> None:
         HOST = args["address"]
         PORT = args["port"]
 
-        stub = ListStub()
+        stub = ListStub(HOST, PORT)
 
         while True:
-
             try:
                 msg = input("Mensagem: ")
-                if msg == "EXIT":
+                
+                if msg == "":
+                    continue
+                elif msg == "EXIT":
                     exit()
 
-                sock = sock_utils.create_tcp_client_socket()
+                cmd, *args = msg.split()
+                res = []
+                if cmd == "list":
+                    res = stub.list()
 
-                # send receive: change to use pickle
-                sock.sendall(msg.encode())
-                resposta = sock.recv(1024)
+                elif cmd == "clear":
+                    res = stub.clear()
 
-                print("Recebi: %s" % resposta.decode())
-                sock.close()
+                elif cmd == "remove":
+                    pass
+
+                elif cmd == "remove-all":
+                    pass
+
+                elif cmd == "pop":
+                    pass
+
+                else:
+                    res = stub.append(msg)
+
+                print("Recebi: %s" % res)
 
             except Exception as e:
                 print(e)
