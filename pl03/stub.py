@@ -37,7 +37,9 @@ class ListStub:
         return res
 
     def append(self, element: str) -> list:
-        return self.send_receive([element])
+        msg = ["append"]
+        msg.append(element)
+        return self.send_receive(msg)
 
     def list(self) -> list:
         return self.send_receive(["list"])

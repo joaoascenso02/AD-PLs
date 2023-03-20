@@ -19,24 +19,29 @@ class ListSkeleton:
         if pedido == None or len(pedido) == 0:
             resposta.append("INVALID MESSAGE")
         else:
-            if pedido[0] == "append" and len(pedido) > 1:
-                self.servicoLista.append(pedido[1])
+            cmd, *args = pedido
+
+            if cmd == "append" and len(pedido) > 1:
+                print(self.servicoLista)
+                print(args)
+
+                self.servicoLista.extend(args)
                 resposta.append("OK")
 
-            elif pedido[0] == "list":
-                resposta.append(str(self.servicoLista))
+            elif cmd == "list":
+                resposta = self.servicoLista
 
-            elif pedido[0] == "clear":
+            elif cmd == "clear":
                 self.servicoLista = []
                 resposta.append("OK")
 
-            elif pedido[0] == "remove":
+            elif cmd == "remove":
                 pass
 
-            elif pedido[0] == "remove-all":
+            elif cmd == "remove-all":
                 pass
 
-            elif pedido[0] == "pop":
+            elif cmd == "pop":
                 pass
 
             else:
