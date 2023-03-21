@@ -56,6 +56,7 @@ def main() -> None:
                 sock.sendall(msg_bytes)
 
                 resp_size_bytes = sock_utils.receive_all(sock, 4)
+                print(resp_size_bytes)
                 resp_size = struct.unpack("i", resp_size_bytes)[0]
 
                 resp_bytes = sock_utils.receive_all(sock, resp_size)

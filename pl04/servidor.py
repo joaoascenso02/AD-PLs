@@ -71,6 +71,7 @@ def main() -> None:
                         req_bytes = sock_utils.receive_all(sckt, req_size)
                         req = p.loads(req_bytes)
 
+                        # se recebou dados
                         if req:
 
                             resp = ["Ack"]
