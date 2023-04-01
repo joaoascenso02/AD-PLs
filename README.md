@@ -24,7 +24,7 @@ O repositório está organizado da seguinte forma:
 |   |-- codigoN.py
 |   |-- guiao-aula.pdf
 |   |-- material-complementar.pdf
-|-- pl01
+|-- pl02
 |   |-- codigo1.py
 |   |-- codigo2.py
 |   ...
