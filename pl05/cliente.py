@@ -31,10 +31,22 @@ def main() -> None:
                 url_recurso = "/lista/append/" + argumentos[0]
 
             elif comando == "CONTAINS":
-                pass
+                metodo_http = "GET"
+                url_recurso = "/lista/contains/" + argumentos[0]
 
             elif comando == "UPDATE":
-                pass
+                metodo_http = "PUT"
+                url_recurso = "/lista/update/" + argumentos[0]
+                corpo_pedido = argumentos[1]
+                cabecalho_pedido = {
+                    'Content-Length': len(corpo_pedido.encode())}
+
+            elif comando == "REMOVE":
+                metodo_http = "DELETE"
+                url_recurso = "lista/remove/" + argumentos[0]
+
+            else:
+                print("UNKNOWN-COMMAND")
 
             if metodo_http is not None and url_recurso is not None:
                 ligacao = http.client.HTTPConnection("localhost", 8888)
