@@ -1,35 +1,106 @@
 from flask import Flask, request, make_response
+import sqlite3
 
 app = Flask(__name__)
 
 
-@app.route('/aluno', methods=["PUT"])
-@app.route('/aluno/<int:id>', methods=["GET"])
+def get_db_connection() -> sqlite3.Connection:
+    conn = sqlite3.connect("notas.db")
+    conn.row_factory = sqlite3.Row
+    return conn
+
+
+@app.route("/aluno", methods=["PUT"])
+@app.route("/aluno/<int:id>", methods=["GET"])
 def aluno(id=None):
     if request.method == "GET":
-        # Ler dados do aluno com id na base de dados
-        r = make_response('Dados do aluno %d' % id)
-        r.status_code = 200
-        return r
-    if request.method == "PUT":
-        # Ler dados do aluno no pedido e inserir na base de dados
-        # Em caso de sucesso responder com a localização do novo recurso
-        r = make_response()
-        r.headers['location'] = '/alunos/123'  # 123 para exemplo
-        return r
+        db = get_db_connection()
+        row = db.execute("""
+            SELECT * FROM aluno WHERE numero = ?
+        """, (id, )).fetchone()
+
+        if not row:
+            return {}, 404
+        else:
+            return {"data": dict(row)}, 200
+
+    elif request.method == "PUT":
+        body = request.get_json()
+        if "numero" not in body:
+            return {"message": "numero is required"}, 400
+
+        elif not isinstance(body["numero"], int):
+            return {"message": "numero is not an int"}, 400
+
+        elif "nome" not in body:
+            return {"message": "nome is required"}, 400
+
+        numero = body["numero"]
+        nome = body["nome"]
+
+        try:
+            db = get_db_connection()
+            db.execute("""
+                INSERT INTO aluno (numero, nome) VALUES (?, ?)
+            """, (numero, nome))
+            db.commit()
+            db.close()
+
+            r = make_response()
+            r.headers["location"] = "/alunos/" + body["numero"]
+            return r
+
+        except sqlite3.IntegrityError:
+            return {"message": "Erro de integridade"}, 400
 
 
-@app.route('/notas', methods=["POST", "GET"])
+@app.route("/notas", methods=["POST", "GET"])
 def notas():
     if request.method == "POST":
-        # ler dados no pedido e inserir na base de dados
-        r = make_response()
-        return r
-    if request.method == "GET":
+        body = request.get_json()
+
+        if "numero_aluno" not in body:
+            return {"message": "numero_aluno is required"}, 400
+
+        elif not isinstance(body["numero_aluno"], int):
+            return {"message": "numero_aluno is not an int"}, 400
+
+        elif "ano" not in body:
+            return {"message": "ano is required"}, 400
+
+        elif "cadeira" not in body:
+            return {"message": "cadeira is required"}, 400
+
+        elif "nota" not in body:
+            return {"message": "nota is required"}, 400
+
+        elif not isinstance(body["nota"], int):
+            return {"message": "nota is not an int"}, 400
+        
+        numero_aluno = body["numero_aluno"]
+        ano = body["ano"]
+        cadeira = body["cadeira"]
+        nota = body["nota"]
+
+        try:
+            db = get_db_connection()
+            db.execute("""
+                INSERT INTO notas (numero_aluno, ano, cadeira, nota) VALUES (?, ?, ?, ?)
+            """, (numero_aluno, ano, cadeira, nota))
+            db.commit()
+            db.close()
+
+            return {}, 201
+
+        except sqlite3.IntegrityError:
+            return {"message": "Erro de integridade"}, 400
+
+
+    elif request.method == "GET":
         # ler campos no pedido e fazer query de acordo
-        r = make_response(request.data)  # Devolve os dados no pedido
+        r = make_response(request.data)  # devolve os dados no pedido
         return r
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run(debug=True)
